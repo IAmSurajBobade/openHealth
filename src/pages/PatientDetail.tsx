@@ -7,8 +7,9 @@ import { Card } from '../components/ui/Card';
 import { Button } from '../components/ui/Button';
 import { Input } from '../components/ui/Input';
 import { Sparkline } from '../components/Sparkline';
-import { Search, ArrowLeft, Plus } from 'lucide-react';
+import { Search, ArrowLeft, Plus, Trash2 } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
+import { deleteTestReadingsByName } from '../services/db';
 
 interface TestGroup {
     testName: string;
@@ -76,7 +77,16 @@ export const PatientDetail = () => {
         await savePreferences({ filterTestsQuery: val });
     };
 
-    if (!patient) return <div className="p-8 text-center">Loading...</div>;
+    const handleDeleteTestGroup = async (e: React.MouseEvent, testName: string) => {
+        e.stopPropagation();
+        if (!patient) return;
+        if (window.confirm(`Are you sure you want to delete ALL records for "${testName}"? This action cannot be undone.`)) {
+            await deleteTestReadingsByName(patient.id, testName);
+            loadData(patient.id);
+        }
+    };
+
+    if (!patient) return <div className="p-8 text-center text-zinc-400">Loading...</div>;
 
     const filteredAndSorted = testGroups
         .filter(g =>
@@ -161,15 +171,24 @@ export const PatientDetail = () => {
                                     <p className="text-xs text-zinc-500 mt-1">{daysSince}</p>
                                 </div>
 
-                                {/* Visual Trend Graphic */}
-                                <div className="w-24 h-16 ml-4 shrink-0 flex items-center justify-center">
-                                    <Sparkline
-                                        data={allValues}
-                                        idealMin={group.latestReading.idealMin}
-                                        idealMax={group.latestReading.idealMax}
-                                        width={80}
-                                        height={40}
-                                    />
+                                {/* Actions & Visual Trend Graphic */}
+                                <div className="flex items-center gap-2">
+                                    <button
+                                        onClick={(e) => handleDeleteTestGroup(e, group.testName)}
+                                        className="p-2 text-zinc-600 hover:text-red-400 transition-colors rounded-full hover:bg-zinc-800"
+                                        title={`Delete all ${group.testName} records`}
+                                    >
+                                        <Trash2 size={16} />
+                                    </button>
+                                    <div className="w-24 h-16 ml-2 shrink-0 flex items-center justify-center">
+                                        <Sparkline
+                                            data={allValues}
+                                            idealMin={group.latestReading.idealMin}
+                                            idealMax={group.latestReading.idealMax}
+                                            width={80}
+                                            height={40}
+                                        />
+                                    </div>
                                 </div>
                             </Card>
                         );

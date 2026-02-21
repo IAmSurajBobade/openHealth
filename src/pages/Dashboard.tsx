@@ -7,7 +7,7 @@ import { Card } from '../components/ui/Card';
 import { Input } from '../components/ui/Input';
 import { Button } from '../components/ui/Button';
 import { Modal } from '../components/ui/Modal';
-import { Search, UserPlus } from 'lucide-react';
+import { Search, UserPlus, MoreVertical, Settings } from 'lucide-react';
 
 interface PatientWithLatest {
     patient: Patient;
@@ -26,6 +26,8 @@ export const Dashboard = () => {
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
     const [newMemberName, setNewMemberName] = useState('');
     const [newMemberAge, setNewMemberAge] = useState('');
+
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     useEffect(() => {
         loadData();
@@ -101,9 +103,29 @@ export const Dashboard = () => {
         <div className="max-w-4xl mx-auto p-4 space-y-6">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b pb-4" style={{ borderColor: 'var(--border-color)' }}>
                 <h1 className="text-2xl font-bold">{t('dashboard.title')}</h1>
-                <Button onClick={() => setIsAddModalOpen(true)} className="flex items-center gap-2">
-                    <UserPlus size={18} /> {t('dashboard.add_member')}
-                </Button>
+                <div className="flex items-center gap-2 relative">
+                    <Button onClick={() => setIsAddModalOpen(true)} className="flex items-center gap-2">
+                        <UserPlus size={18} /> {t('dashboard.add_member')}
+                    </Button>
+                    <button
+                        onClick={() => setIsMenuOpen(!isMenuOpen)}
+                        onBlur={() => setTimeout(() => setIsMenuOpen(false), 200)}
+                        className="p-2 text-zinc-400 hover:text-white transition-colors rounded-full hover:bg-zinc-800"
+                    >
+                        <MoreVertical size={20} />
+                    </button>
+                    {isMenuOpen && (
+                        <div className="absolute top-12 right-0 bg-zinc-800 border border-zinc-700 rounded-md shadow-xl z-50 overflow-hidden w-48 animate-fade-in">
+                            <button
+                                onClick={() => navigate('/manage-members')}
+                                className="w-full text-left px-4 py-3 hover:bg-zinc-700 transition-colors flex items-center gap-3 text-sm"
+                            >
+                                <Settings size={16} />
+                                Manage Members
+                            </button>
+                        </div>
+                    )}
+                </div>
             </div>
 
             <div className="flex flex-col sm:flex-row gap-4 mb-6">
@@ -137,7 +159,7 @@ export const Dashboard = () => {
             ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {filteredAndSorted.map(({ patient, latestDate }) => (
-                        <Card key={patient.id} onClick={() => navigate(`/patient/${patient.id}`)}>
+                        <Card key={patient.id} onClick={() => navigate(`/patient/${patient.id}`)} className="cursor-pointer">
                             <h3 className="text-lg font-semibold truncate" title={patient.name}>{patient.name}</h3>
                             <div className="text-sm mt-2 space-y-1" style={{ color: 'var(--text-secondary)' }}>
                                 {patient.age && <p>{t('patient.age')}: {patient.age}</p>}

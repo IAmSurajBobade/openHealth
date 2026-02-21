@@ -78,19 +78,31 @@ export const savePatient = async (patient: Patient): Promise<void> => {
     await db.put('patients', patient);
 };
 
+export const updatePatient = async (id: string, updates: Partial<Patient>): Promise<void> => {
+    const db = await initDB();
+    const existing = await db.get('patients', id);
+    if (!existing) throw new Error('Patient not found');
+    await db.put('patients', { ...existing, ...updates });
+};
+
 export const deletePatient = async (id: string): Promise<void> => {
     const db = await initDB();
-    await db.delete('patients', id);
-    // Also delete associated readings
-    const tx = db.transaction('readings', 'readwrite');
-    const index = tx.store.index('by-patientId');
-    let cursor = await index.openCursor(id);
-    while (cursor) {
-        await cursor.delete();
-        cursor = await cursor.continue();
+    const tx = db.transaction(['patients', 'readings'], 'readwrite');
+
+    // Delete patient
+    await tx.objectStore('patients').delete(id);
+
+    // Delete all readings associated with patient
+    const readingsStore = tx.objectStore('readings');
+    const index = readingsStore.index('by-patientId');
+    const allReadings = await index.getAll(id);
+    for (const r of allReadings) {
+        await readingsStore.delete(r.id);
     }
     await tx.done;
 };
+
+
 
 // --- Readings ---
 export const getPatientReadings = async (patientId: string): Promise<TestReading[]> => {
@@ -113,6 +125,32 @@ export const saveReading = async (reading: TestReading): Promise<void> => {
             defaultIdealMax: reading.idealMax
         });
     }
+};
+
+export const updateReading = async (id: string, updates: Partial<TestReading>): Promise<void> => {
+    const db = await initDB();
+    const existing = await db.get('readings', id);
+    if (!existing) throw new Error('Reading not found');
+    await db.put('readings', { ...existing, ...updates });
+};
+
+export const deleteReading = async (id: string): Promise<void> => {
+    const db = await initDB();
+    await db.delete('readings', id);
+};
+
+export const deleteTestReadingsByName = async (patientId: string, testName: string): Promise<void> => {
+    const db = await initDB();
+    const tx = db.transaction('readings', 'readwrite');
+    const index = tx.store.index('by-patientId');
+    const all = await index.getAll(patientId);
+
+    // Using simple filter and delete
+    const toDelete = all.filter(r => r.testName === testName);
+    for (const r of toDelete) {
+        await tx.store.delete(r.id);
+    }
+    await tx.done;
 };
 
 export const bulkSaveReadings = async (readings: TestReading[]): Promise<void> => {

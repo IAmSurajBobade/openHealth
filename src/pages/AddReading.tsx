@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { getPatients, getTestReferences, saveReading, bulkSaveReadings } from '../services/db';
 import type { Patient, TestReference, TestReading } from '../types';
 import { Card } from '../components/ui/Card';
@@ -10,6 +10,7 @@ import { ArrowLeft } from 'lucide-react';
 export const AddReading = () => {
     const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
+    const location = useLocation();
 
     const [patient, setPatient] = useState<Patient | null>(null);
     const [testRefs, setTestRefs] = useState<TestReference[]>([]);
@@ -38,6 +39,19 @@ export const AddReading = () => {
 
         const refs = await getTestReferences();
         setTestRefs(refs);
+
+        // Pre-fill testName if passed via query params
+        const params = new URLSearchParams(location.search);
+        const prefillTest = params.get('testName');
+        if (prefillTest) {
+            setTestName(prefillTest);
+            const match = refs.find(r => r.testName.toLowerCase() === prefillTest.toLowerCase());
+            if (match) {
+                setUnit(match.unit || '');
+                setIdealMin(match.defaultIdealMin?.toString() || '');
+                setIdealMax(match.defaultIdealMax?.toString() || '');
+            }
+        }
     };
 
     const handleTestNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {

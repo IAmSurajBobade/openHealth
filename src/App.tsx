@@ -3,6 +3,8 @@ import { Dashboard } from './pages/Dashboard';
 import { PatientDetail } from './pages/PatientDetail';
 import { TestDetail } from './pages/TestDetail';
 import { AddReading } from './pages/AddReading';
+import { ManageMembers } from './pages/ManageMembers';
+import { ManageReadings } from './pages/ManageReadings';
 import { Settings } from './pages/Settings';
 import { Settings as SettingsIcon } from 'lucide-react';
 
@@ -28,7 +30,9 @@ function App() {
           <Route path="/" element={<Dashboard />} />
           <Route path="/patient/:id" element={<PatientDetail />} />
           <Route path="/patient/:id/test/:testName" element={<TestDetail />} />
+          <Route path="/patient/:id/manage-readings/:testName" element={<ManageReadings />} />
           <Route path="/patient/:id/add-reading" element={<AddReading />} />
+          <Route path="/manage-members" element={<ManageMembers />} />
           <Route path="/settings" element={<Settings />} />
         </Routes>
       </main>
