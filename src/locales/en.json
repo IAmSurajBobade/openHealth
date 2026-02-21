@@ -1,0 +1,50 @@
+{
+    "translation": {
+        "app": {
+            "title": "Family Health Tracker"
+        },
+        "dashboard": {
+            "title": "Family Members",
+            "add_member": "Add Member",
+            "no_members": "No family members found. Add one to get started.",
+            "search_placeholder": "Search members...",
+            "sort_by": "Sort by",
+            "filter_by": "Filter by"
+        },
+        "patient": {
+            "latest_report": "Latest Report",
+            "age": "Age",
+            "tests": "Tests",
+            "add_reading": "Add Reading",
+            "import_export": "Import/Export Data"
+        },
+        "test": {
+            "latest_value": "Latest Value",
+            "ideal_range": "Ideal Range",
+            "days_since": "days ago",
+            "trend": "Trend"
+        },
+        "form": {
+            "patient_name": "Patient Name",
+            "test_name": "Test Name (e.g., Blood Sugar)",
+            "date": "Date of Report",
+            "reason": "Reason for Test",
+            "value": "Reading Value",
+            "unit": "Unit",
+            "ideal_min": "Ideal Min",
+            "ideal_max": "Ideal Max",
+            "notes": "Notes",
+            "submit": "Save Reading",
+            "cancel": "Cancel",
+            "bulk_add": "Bulk Add Mode",
+            "single_add": "Single Add Mode"
+        },
+        "settings": {
+            "title": "Settings & Sync",
+            "export_member": "Export Member Data",
+            "export_profile": "Export Entire Profile",
+            "export_reference": "Export Test References",
+            "import_data": "Import Data (JSON)"
+        }
+    }
+}
