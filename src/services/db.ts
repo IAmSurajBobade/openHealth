@@ -1,6 +1,7 @@
 import { openDB } from 'idb';
 import type { DBSchema, IDBPDatabase } from 'idb';
 import type { Patient, TestReading, TestReference, UserProfile, UserPreferences } from '../types';
+import { defaultTests } from '../data/defaultTests';
 
 interface HealthTrackerDB extends DBSchema {
     patients: {
@@ -49,9 +50,21 @@ export const initDB = () => {
                     db.createObjectStore('preferences');
                 }
             },
+        }).then(async (db) => {
+            // Seed default references if empty
+            const tx = db.transaction('testReferences', 'readonly');
+            const count = await tx.store.count();
+            if (count === 0) {
+                const writeTx = db.transaction('testReferences', 'readwrite');
+                for (const test of defaultTests) {
+                    await writeTx.store.put(test);
+                }
+                await writeTx.done;
+            }
+            return db;
         });
     }
-    return dbPromise;
+    return dbPromise as Promise<IDBPDatabase<HealthTrackerDB>>;
 };
 
 // --- Patients ---

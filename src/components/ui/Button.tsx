@@ -5,23 +5,29 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 export const Button = ({ children, variant = 'primary', className = '', ...props }: ButtonProps) => {
-    const baseStyle = "px-4 py-2 rounded-md font-medium transition-colors shadow-sm animate-fade-in focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-zinc-900";
+    const baseStyle = "px-4 py-2 rounded-md font-medium transition-colors shadow-sm animate-fade-in focus:outline-none";
 
-    // To map to our CSS variables exactly, we can use style directly for the primary/danger variants or let Tailwind handle if we were using it.
-    // Since we use Vanilla CSS variables, we'll apply them here.
+    const customStyle: React.CSSProperties = {
+        transition: 'all 0.2s ease',
+        border: '1px solid transparent'
+    };
 
-    const customStyle: React.CSSProperties = {};
     if (variant === 'primary') {
         customStyle.backgroundColor = 'var(--accent-primary)';
-        customStyle.color = 'var(--text-primary)';
+        customStyle.color = '#fff';
+        customStyle.boxShadow = '0 2px 10px var(--accent-glow)';
     } else if (variant === 'danger') {
         customStyle.backgroundColor = 'var(--danger)';
-        customStyle.color = 'var(--text-primary)';
+        customStyle.color = '#fff';
     } else {
         customStyle.backgroundColor = 'var(--bg-tertiary)';
         customStyle.color = 'var(--text-primary)';
         customStyle.borderColor = 'var(--border-color)';
+        customStyle.backdropFilter = 'blur(8px)';
     }
+
+    // Hover states using a simple hack or classes: we rely on generic structural classes
+    // We'll add dynamic hover scale via inline transform but CSS transition handles it well.
 
     return (
         <button className={`${baseStyle} ${className}`} style={customStyle} {...props}>

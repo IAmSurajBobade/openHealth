@@ -4,11 +4,7 @@ export const Card = ({ children, className = '', onClick }: { children: React.Re
     return (
         <div
             onClick={onClick}
-            className={`bg-zinc-800 rounded-lg p-4 shadow-md border animate-fade-in ${onClick ? 'cursor-pointer hover:border-blue-500 transition-colors' : 'border-zinc-700'} ${className}`}
-            style={{
-                backgroundColor: 'var(--bg-secondary)',
-                borderColor: 'var(--border-color)',
-            }}
+            className={`premium-card p-4 animate-fade-in ${onClick ? 'cursor-pointer' : ''} ${className}`}
         >
             {children}
         </div>

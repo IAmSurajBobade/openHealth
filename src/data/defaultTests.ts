@@ -1,0 +1,82 @@
+import type { TestReference } from '../types';
+
+export const defaultTests: TestReference[] = [
+    {
+        id: 'blood-sugar-fasting',
+        testName: 'Blood Sugar (Fasting)',
+        category: 'Diabetes',
+        unit: 'mg/dL',
+        defaultIdealMin: 70,
+        defaultIdealMax: 100,
+    },
+    {
+        id: 'blood-sugar-postprandial',
+        testName: 'Blood Sugar (Postprandial)',
+        category: 'Diabetes',
+        unit: 'mg/dL',
+        defaultIdealMin: 70,
+        defaultIdealMax: 140,
+    },
+    {
+        id: 'hba1c',
+        testName: 'HbA1c',
+        category: 'Diabetes',
+        unit: '%',
+        defaultIdealMin: 4.0,
+        defaultIdealMax: 5.6,
+    },
+    {
+        id: 'weight',
+        testName: 'Body Weight',
+        category: 'Vitals',
+        unit: 'kg',
+    },
+    {
+        id: 'blood-pressure-systolic',
+        testName: 'Blood Pressure (Systolic)',
+        category: 'Vitals',
+        unit: 'mmHg',
+        defaultIdealMin: 90,
+        defaultIdealMax: 120,
+    },
+    {
+        id: 'blood-pressure-diastolic',
+        testName: 'Blood Pressure (Diastolic)',
+        category: 'Vitals',
+        unit: 'mmHg',
+        defaultIdealMin: 60,
+        defaultIdealMax: 80,
+    },
+    {
+        id: 'heart-rate',
+        testName: 'Heart Rate (Resting)',
+        category: 'Vitals',
+        unit: 'bpm',
+        defaultIdealMin: 60,
+        defaultIdealMax: 100,
+    },
+    {
+        id: 'hemoglobin',
+        testName: 'Hemoglobin (Hb)',
+        category: 'CBC',
+        unit: 'g/dL',
+        defaultIdealMin: 12.0,
+        defaultIdealMax: 17.5,
+    },
+    {
+        id: 'cholesterol-total',
+        testName: 'Total Cholesterol',
+        category: 'Lipid Profile',
+        unit: 'mg/dL',
+        defaultIdealMin: 0,
+        defaultIdealMax: 200,
+    },
+    {
+        id: 'body-temperature',
+        testName: 'Body Temperature',
+        category: 'Vitals',
+        unit: '°F',
+        defaultIdealMin: 97.0,
+        defaultIdealMax: 99.0,
+    }
+];
