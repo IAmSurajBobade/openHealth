@@ -25,3 +25,6 @@ lint: ## Run ESLint to check for code issues
 clean: ## Remove node_modules and dist directories (fresh start)
 	rm -rf node_modules
 	rm -rf dist
+
+venv:
+	source .venv/bin/activate

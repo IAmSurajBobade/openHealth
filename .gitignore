@@ -22,4 +22,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-.vercel
+.vercel/
+.venv/
+data/input/
+data/output/

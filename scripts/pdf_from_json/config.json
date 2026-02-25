@@ -1,0 +1,50 @@
+{
+    "input_path": "data/input",
+    "output_dir": "data/output",
+    "naming_pattern": "report_{PATIENT_NAME}_{YYMMDD}_{HHMMSS}.pdf",
+    "date_format": "%d-%b-%Y",
+    "include_tests": [
+        "*"
+    ],
+    "_exclude_tests": [
+        "HEMOGLOBIN %"
+    ],
+    "_test_sequence": [
+        "Blood Sugar",
+        "Platelet Count",
+        "HEMOGLOBIN"
+    ],
+    "sort": "by_date_des",
+    "max_readings_per_test": 0,
+    "date_range": {
+        "start": "",
+        "end": ""
+    },
+    "diagram": {
+        "create": true,
+        "min_readings_for_diagram": 3,
+        "include_tests": [
+            "*"
+        ],
+        "exclude_tests": [],
+        "default_type": "line",
+        "default_color": "blue",
+        "_tests": [
+            {
+                "name": "Blood Sugar",
+                "type": "line",
+                "color": "blue"
+            },
+            {
+                "name": "Platelet Count",
+                "type": "bar",
+                "color": "green"
+            },
+            {
+                "name": "HEMOGLOBIN",
+                "type": "line",
+                "color": "red"
+            }
+        ]
+    }
+}
